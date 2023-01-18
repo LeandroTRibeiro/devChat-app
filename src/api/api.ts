@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASEAPI = 'http://localhost:2000';
+const BASEAPI = 'https://devchat.onrender.com';
 
 export const Api = {
     doLogin: async (email: string, password: string) => {
