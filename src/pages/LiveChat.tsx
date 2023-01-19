@@ -319,7 +319,7 @@ export const LiveChat = () => {
             </div>
             <div className="flex-1 flex flex-col">
                 <div className="flex-1">
-                    <ul className={`overflow-y-scroll h-[calc(100vh-50px)] p-5 ${menu ? 'mg:h-[calc(100vh-180px)]' : 'mg:h-[calc(100vh-300px)]'}`} id="chatList" ref={ulRef} style={{scrollbarColor: 'light'}}>
+                    <ul className={`overflow-y-scroll h-[calc(100vh-50px)] p-5 ${menu ? 'mg:h-[calc(100vh-230px)]' : 'mg:h-[calc(100vh-350px)]'}`} id="chatList" ref={ulRef} style={{scrollbarColor: 'light'}}>
                         {msgs.map((item, index) => {
                             if(item.status) {
                                 return (
