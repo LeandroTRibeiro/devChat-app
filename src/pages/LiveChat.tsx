@@ -319,7 +319,7 @@ export const LiveChat = () => {
             </div>
             <div className="flex-1 flex flex-col">
                 <div className="flex-1">
-                    <ul className={`overflow-y-scroll h-[calc(100vh-50px)] p-5 ${menu ? 'mg:h-[calc(100vh-230px)]' : 'mg:h-[calc(100vh-350px)]'}`} id="chatList" ref={ulRef} style={{scrollbarColor: 'light'}}>
+                    <ul className={`overflow-y-scroll h-[calc(100vh-50px)] p-5 ${menu ? 'mg:h-[calc(100vh-130px)]' : 'mg:h-[calc(100vh-250px)]'}`} id="chatList" ref={ulRef} style={{scrollbarColor: 'light'}}>
                         {msgs.map((item, index) => {
                             if(item.status) {
                                 return (
@@ -368,13 +368,13 @@ export const LiveChat = () => {
                             <li className="cursor-pointer text-2xl" onClick={() => handleAddEmoji(14)}>😡</li>
                             <li className="cursor-pointer text-2xl" onClick={() => handleAddEmoji(15)}>😇</li>
                         </ul>
-                        <FaceSmileIcon className="w-10 cursor-pointer" onClick={() => emojiMenu ? setEmojiMenu(false) : setEmojiMenu(true)}/>
+                        <FaceSmileIcon className="w-10 cursor-pointer mg:z-50" onClick={() => emojiMenu ? setEmojiMenu(false) : setEmojiMenu(true)}/>
                     </div>
                     <input
                         id='emoji'
                         type="text"
                         placeholder="Mensagem"
-                        className="input input-secondary w-full h-[50px] rounded-none hover:outline-none bg-white"
+                        className="input input-secondary w-full h-[50px] rounded-none hover:outline-none bg-white mg:absolute mg:bottom-0"
                         value={input}
                         onChange={changeInput}
                         onKeyUp={handleSendMsg}
