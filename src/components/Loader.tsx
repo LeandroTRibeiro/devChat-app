@@ -9,7 +9,7 @@ type PropsType = {
 export const Loader = (Props: PropsType) => {
 
     return(
-        <div className="h-[100vh] flex justify-center items-center">
+        <div className="h-[100vh] flex justify-center items-center bg-white">
             <BeatLoader
                 color={`#F000B8`}
                 loading={Props.data.loading}

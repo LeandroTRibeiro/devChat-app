@@ -16,7 +16,7 @@ export const LiveChat = () => {
     const [input, setInput] = useState('');
 
     const [disabled, setDisabled] = useState(false);
-    const [menu, setMenu] = useState(false);
+    const [menu, setMenu] = useState(true);
     const ulRef = useRef<any>(null);
     const [emojiMenu, setEmojiMenu] = useState(false);
     const [status, setStatus] = useState(false);
