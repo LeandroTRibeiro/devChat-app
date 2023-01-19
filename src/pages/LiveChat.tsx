@@ -24,7 +24,6 @@ export const LiveChat = () => {
     const [status, setStatus] = useState(false);
     const [colorRing, setColorRing] = useState(`w-14 rounded-full ring ring-green-500 ring-offset-base-100 ring-offset-2`);
     const [usersColorRing, setUsersColorRing] = useState('ring-green-500');
-    const [height, setHeight] = useState('100vh');
 
     const date = new Date();
     const hour = date.getHours();
@@ -267,12 +266,6 @@ export const LiveChat = () => {
         setDisabled(false);
     });
 
-    window.addEventListener('resize', () => {
-
-        setHeight(window.screen.height.toString());
-        
-    });
-
     return (
         <div className="h-[100vh] flex flex-row-reverse mg:flex-col bg-white text-stone-800">
             <div className={`bg-gradient-to-r from-white to-pink-300 ease-in duration-300 w-80 mg:w-full ${menu ? 'w-28 mg:w-full' : ''}`}>
@@ -327,7 +320,7 @@ export const LiveChat = () => {
             </div>
             <div className="flex-1 flex flex-col">
                 <div className="flex-1">
-                    <ul className={`overflow-y-scroll h-[calc(100vh-50px)] p-5 ${menu ? `mg:h-[calc(${height}-130px)]` : `mg:h-[calc(${height}px-250px)]`}`} id="chatList" ref={ulRef} style={{scrollbarColor: 'light'}}>
+                    <ul className={`overflow-y-scroll h-[calc(100vh-50px)] p-5 ${menu ? `mg:h-[calc(100vh-130px)]` : `mg:h-[calc(100vh-250px)]`}`} id="chatList" ref={ulRef} style={{scrollbarColor: 'light'}}>
                         {msgs.map((item, index) => {
                             if(item.status) {
                                 return (

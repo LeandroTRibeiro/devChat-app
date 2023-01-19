@@ -38,6 +38,9 @@ export const Register = () => {
     const imgInputRef = useRef<any>(null);
     const [aspect, setAspect] = useState<number | undefined>(1);
 
+    const [error, setError] = useState('');
+    const [buttonDisabled, setButtonDisabled] = useState(true);
+
     const changeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             setCrop(undefined)
@@ -67,7 +70,7 @@ export const Register = () => {
         if (aspect) {
             const { width, height } = e.currentTarget
             setCrop(centerAspectCrop(width, height, aspect))
-          }
+        }
     };
 
     useDebounceEffect(
@@ -83,7 +86,8 @@ export const Register = () => {
               imgRef.current,
               previewCanvasRef.current,
               completedCrop,
-            )
+            );
+            setButtonDisabled(false);
 
             
           }
@@ -98,8 +102,10 @@ export const Register = () => {
         if(email === confirmEmail) {
             setConfirmErrorEmail('');
             if (password === confirmPassword) {
+
                 setConfirmErrorPassword('');
                 setDisabled(true);
+                
             } else {
                 setConfirmErrorPassword('As Senhas devem ser iguais');
             }
@@ -111,45 +117,85 @@ export const Register = () => {
 
     const handletest = async () => {
 
+        setLoading(true);
+
         const base64String = previewCanvasRef.current?.toDataURL('image/png');
-        const imageFile = imageServices.base64StringtoFile(base64String, 'avatar');
-
-        const fData = new FormData();
-        fData.append('firstName', firstName);
-        fData.append('lastName', lastName);
-        fData.append('email', email);
-        fData.append('password', password);
-        fData.append('avatar', imageFile);
-
+        
         try {
-            setLoading(true);
-            const response = await Api.createUser(fData);
-            
-            try {
-                const emailConfirm = await Api.sendConfirmEmail(email);
 
-                
-                if(emailConfirm.send) {
+            const imageFile = imageServices.base64StringtoFile(base64String, 'avatar');
+
+            const validate = /\S+@\S+\.\S+/;
+
+            if(validate.test(email)) {
+
+                const fData = new FormData();
+                fData.append('firstName', firstName);
+                fData.append('lastName', lastName);
+                fData.append('email', email);
+                fData.append('password', password);
+                fData.append('avatar', imageFile);
+    
+                if(imageFile.size > 10485760) {
+    
                     setLoading(false);
-                    navigate('/almostthere');
+                    setError('Arquivo grande demais');
+    
                 } else {
-                    setLoading(false);
-                    console.log(response, emailConfirm);
-                }
-            } catch(error) {
-                
-                setLoading(false);
-                console.log(error);
-                
-            }
+    
+                    try {
+    
+                        const response = await Api.createUser(fData);
+                    
+                        if(response.error) {
+        
+                            setLoading(false);
+                            setError(response.error);
+        
+                        } else {
+    
+                            setLoading(true);
+        
+                            const emailConfirm = await Api.sendConfirmEmail(email);
+    
+                            if(emailConfirm.error) {
+                                setLoading(false);
+                                setError(emailConfirm.error);
+                            } else {
 
+                                setLoading(false);
+                                navigate('/almostthere');
+
+                            }
+        
+                        }
+            
+                    } catch(error: any) {
+                        setLoading(false);
+                        setError(error.message);
+                    }
+        
+                    
+                }
+
+            } else {
+                setLoading(false);
+                setError('Este E-mail não é um E-mail válido!');
+            }
+            
         } catch(error) {
 
             setLoading(false);
-            console.log(error);
+            setError('Arquivo Inválido');
+
         }
 
     };
+
+    const handleError = () => {
+        setError('');
+        setDisabled(false);
+    }
 
     return(
         <>
@@ -162,7 +208,19 @@ export const Register = () => {
 
         {!loading &&
             <>
-            <div className={`h-[100vh] flex-col justify-center items-center bg-white ${disabled ? 'flex' : 'hidden'}`}>
+            {error &&
+                <div className="h-[100vh] flex justify-center items-center bg-white">
+                    <div className="w-2/4 card bg-slate-50 text-stone-800 shadow-xl border-2 ms:w-3/4 mx:w-11/12">
+                        <div className="card-body flex items-center">
+                            <h2 className="text-5xl font-bold text-secondary-focus">DevChat</h2>
+                            <p className='text-lg font-semibold'>Error</p>
+                            <p>{error}</p>
+                            <button className="btn btn-secondary" onClick={handleError}>Voltar</button>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div className={`h-[100vh] flex-col justify-center items-center bg-white ${disabled ? 'flex' : 'hidden'} ${error ? 'hidden' : ''}`}>
                 <div className="card w-[90vw] p-5 bg-slate-50 text-stone-800 shadow-2xl border-2 grid grid-cols-2 gap-5 ms:flex ms:flex-col">
                     <div className="card-body flex items-center p-0 grow-0">
                         <h2 className="text-5xl font-bold text-secondary-focus">DevChat</h2>
@@ -190,11 +248,11 @@ export const Register = () => {
                         )}
                     </div>
                     <button className="btn btn-warning" onClick={() => disabled ? setDisabled(false) : setDisabled(true)}>Voltar</button>
-                    <button onClick={handletest} className="btn btn-secondary ">Concluir</button>
+                    <button onClick={handletest} disabled={buttonDisabled} className="btn btn-secondary ">Concluir</button>
                 </div>
             </div>
     
-            <div className={`h-[100vh] ms:h-max justify-center items-center bg-white ${disabled ? 'hidden' : 'flex'}`}>
+            <div className={`h-[100vh] ms:h-max justify-center items-center bg-white ${disabled || error ? 'hidden' : 'flex'}`}>
                 <div className="card w-1/2 tb:w-4/5 mg:w-11/12 bg-slate-50 text-stone-800 shadow-2xl border-2">
                     <div className="card-body flex items-center">
                         <h2 className="text-5xl font-bold text-secondary-focus">DevChat</h2>
