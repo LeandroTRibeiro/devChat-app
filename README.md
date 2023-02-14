@@ -18,7 +18,7 @@
 <h2 id="demo">🕹️ Demo</h2>
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/e3a0d613-19ac-4d31-8f73-b57d809363fa/deploy-status)](https://app.netlify.com/sites/superlative-speculoos-6a0b7b/deploys)
-<br><a href="https://superlative-speculoos-6a0b7b.netlify.app/" target="_blank">Teste minha aplicação aqui!</a>
+<br><a href="https://devlivechat.netlify.app" target="_blank">Teste minha aplicação aqui!</a>
 
 <h2 id="objetivo">📖 Objetivo</h2>
 <p>Objetivo principal deste projeto foi a criação de um Backend e Frontend que tivésse toda a parte de cadastro completa, desde autenticações e autorizações e envio de E-mails, e que utilizasse sockets para envio e recebimento de mensagens.</p>
