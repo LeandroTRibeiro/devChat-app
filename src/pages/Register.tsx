@@ -35,7 +35,7 @@ export const Register = () => {
     const [imgSrc, setImgSrc] = useState('');
     const previewCanvasRef = useRef<HTMLCanvasElement>(null);
     const imgRef = useRef<HTMLImageElement>(null);
-    const imgInputRef = useRef<any>(null);
+    const imgInputRef = useRef<HTMLInputElement>(null);
     const [aspect, setAspect] = useState<number | undefined>(1);
 
     const [error, setError] = useState('');
@@ -45,13 +45,20 @@ export const Register = () => {
         
         if (e.target.files && e.target.files.length > 0) {
 
-            setCrop(undefined)
-            const reader = new FileReader()
-            reader.addEventListener('load', () =>
-              setImgSrc(reader.result?.toString() || ''),
+            setCrop(undefined);
+
+            const reader = new FileReader();
+
+            reader.addEventListener('load', () => {
+
+              setImgSrc(reader.result?.toString() || '');
+
+            }
             )
-            reader.readAsDataURL(e.target.files[0])
-          }
+            
+            reader.readAsDataURL(e.target.files[0]);
+        }
+
     };
 
     const centerAspectCrop = (mediaWidth: number, mediaHeight: number, aspect: number) => {
@@ -121,8 +128,13 @@ export const Register = () => {
 
         setLoading(true);
 
-        const base64String = previewCanvasRef.current?.toDataURL('image/png').toString();
+        if(previewCanvasRef.current) {
+            previewCanvasRef.current.width = 200;
+            previewCanvasRef.current.height = 200;
+        }
 
+        const base64String = previewCanvasRef.current?.toDataURL('image/png').toString();
+        
         try {
 
             const imageFile = imageServices.base64StringtoFile(base64String, 'avatar');
@@ -141,7 +153,7 @@ export const Register = () => {
                 }
                 
                 if(imageFile.size > 33130188) {
-                    
+
                     setLoading(false);
                     setError('Arquivo grande demais');
     
@@ -401,7 +413,6 @@ export const Register = () => {
                                     accept=".jpg, .jpeg, .png"
                                 />
                             </label>
-    
                             <button className="btn btn-secondary mt-6 col-start-1 col-end-3" disabled={disabled}>Continuar</button>
                             
                         </form>

@@ -42,4 +42,5 @@ export function image64toCanvasRef(canvasRef: any, image64: string, pixelCrop: a
         )
     }
 };
+
   
