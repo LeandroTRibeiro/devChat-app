@@ -130,8 +130,6 @@ export const Register = () => {
             const validate = /\S+@\S+\.\S+/;
 
             if(validate.test(email)) {
-
-                console.log(imageFile.size);
                 
                 const fData = new FormData();
                 fData.append('firstName', firstName);
@@ -139,11 +137,11 @@ export const Register = () => {
                 fData.append('email', email);
                 fData.append('password', password);
                 if(base64String) {
-                    fData.append('avatar', base64String);
+                    fData.append('avatar', imageFile);
                 }
                 
-                if(imageFile.size > 16565094) {
-    
+                if(imageFile.size > 33130188) {
+                    
                     setLoading(false);
                     setError('Arquivo grande demais');
     
@@ -177,6 +175,7 @@ export const Register = () => {
                         }
             
                     } catch(error: any) {
+
                         setLoading(false);
                         setError(error.message);
                     }
