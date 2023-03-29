@@ -42,7 +42,9 @@ export const Register = () => {
     const [buttonDisabled, setButtonDisabled] = useState(true);
 
     const changeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
+        
         if (e.target.files && e.target.files.length > 0) {
+
             setCrop(undefined)
             const reader = new FileReader()
             reader.addEventListener('load', () =>
@@ -119,8 +121,8 @@ export const Register = () => {
 
         setLoading(true);
 
-        const base64String = previewCanvasRef.current?.toDataURL('image/png');
-        
+        const base64String = previewCanvasRef.current?.toDataURL('image/png').toString();
+
         try {
 
             const imageFile = imageServices.base64StringtoFile(base64String, 'avatar');
@@ -129,14 +131,18 @@ export const Register = () => {
 
             if(validate.test(email)) {
 
+                console.log(imageFile.size);
+                
                 const fData = new FormData();
                 fData.append('firstName', firstName);
                 fData.append('lastName', lastName);
                 fData.append('email', email);
                 fData.append('password', password);
-                fData.append('avatar', imageFile);
-    
-                if(imageFile.size > 10485760) {
+                if(base64String) {
+                    fData.append('avatar', base64String);
+                }
+                
+                if(imageFile.size > 16565094) {
     
                     setLoading(false);
                     setError('Arquivo grande demais');
@@ -220,7 +226,7 @@ export const Register = () => {
                     </div>
                 </div>
             }
-            <div className={`h-[100vh] flex-col justify-center items-center bg-white ${disabled ? 'flex' : 'hidden'} ${error ? 'hidden' : ''}`}>
+            <div className={`h-fit py-5 flex-col justify-center items-center bg-white ${disabled ? 'flex' : 'hidden'} ${error ? 'hidden' : ''}`}>
                 <div className="card w-[90vw] p-5 bg-slate-50 text-stone-800 shadow-2xl border-2 grid grid-cols-2 gap-5 ms:flex ms:flex-col">
                     <div className="card-body flex items-center p-0 grow-0">
                         <h2 className="text-5xl font-bold text-secondary-focus">DevChat</h2>
@@ -252,7 +258,7 @@ export const Register = () => {
                 </div>
             </div>
     
-            <div className={`h-[100vh] ms:h-max justify-center items-center bg-white ${disabled || error ? 'hidden' : 'flex'}`}>
+            <div className={`h-fit py-5 ms:h-max justify-center items-center bg-white ${disabled || error ? 'hidden' : 'flex'}`}>
                 <div className="card w-1/2 tb:w-4/5 mg:w-11/12 bg-slate-50 text-stone-800 shadow-2xl border-2">
                     <div className="card-body flex items-center">
                         <h2 className="text-5xl font-bold text-secondary-focus">DevChat</h2>
@@ -393,6 +399,7 @@ export const Register = () => {
                                     disabled={disabled}
                                     onChange={changeAvatar}
                                     ref={imgInputRef}
+                                    accept=".jpg, .jpeg, .png"
                                 />
                             </label>
     
