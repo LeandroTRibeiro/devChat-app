@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { HandleEye } from "../helpers/HandleEye";
 import { Loader } from "../components/Loader";
 import { Footer } from "../components/Footer";
+import { ResizeBase64 } from "../helpers/ResizeBase64";
 
 export const Register = () => {
 
@@ -51,10 +52,9 @@ export const Register = () => {
 
             reader.addEventListener('load', () => {
 
-              setImgSrc(reader.result?.toString() || '');
+                setImgSrc(reader.result?.toString() || '');
 
-            }
-            )
+            });
             
             reader.readAsDataURL(e.target.files[0]);
         }
@@ -128,84 +128,90 @@ export const Register = () => {
 
         setLoading(true);
 
-        if(previewCanvasRef.current) {
-            previewCanvasRef.current.width = 200;
-            previewCanvasRef.current.height = 200;
-        }
+        const base64String = previewCanvasRef.current?.toDataURL();
 
-        const base64String = previewCanvasRef.current?.toDataURL('image/png').toString();
-        
-        try {
+        if(base64String) {
 
-            const imageFile = imageServices.base64StringtoFile(base64String, 'avatar');
+            const resizeBase64String = await ResizeBase64(base64String);
 
-            const validate = /\S+@\S+\.\S+/;
+            
 
-            if(validate.test(email)) {
-                
-                const fData = new FormData();
-                fData.append('firstName', firstName);
-                fData.append('lastName', lastName);
-                fData.append('email', email);
-                fData.append('password', password);
-                if(base64String) {
-                    fData.append('avatar', imageFile);
-                }
-                
-                if(imageFile.size > 33130188) {
-
-                    setLoading(false);
-                    setError('Arquivo grande demais');
+            try {
     
-                } else {
+                const imageFile = imageServices.base64StringtoFile(resizeBase64String, 'avatar');
     
-                    try {
+                const validate = /\S+@\S+\.\S+/;
     
-                        const response = await Api.createUser(fData);
+                if(validate.test(email)) {
                     
-                        if(response.error) {
-        
-                            setLoading(false);
-                            setError(response.error);
-        
-                        } else {
+                    const fData = new FormData();
+                    fData.append('firstName', firstName.trim());
+                    fData.append('lastName', lastName.trim());
+                    fData.append('email', email.toLowerCase().trim());
+                    fData.append('password', password.toLowerCase().trim());
+                    if(imageFile) {
+                        fData.append('avatar', imageFile);
+                    }
+                    
+                    if(imageFile.size > 33130188) {
     
-                            setLoading(true);
+                        setLoading(false);
+                        setError('Arquivo grande demais');
         
-                            const emailConfirm = await Api.sendConfirmEmail(email);
-    
-                            if(emailConfirm.error) {
+                    } else {
+        
+                        try {
+        
+                            const response = await Api.createUser(fData);
+                        
+                            if(response.error) {
+            
                                 setLoading(false);
-                                setError(emailConfirm.error);
+                                setError(response.error);
+            
                             } else {
-
-                                setLoading(false);
-                                navigate('/almostthere');
-
-                            }
         
+                                setLoading(true);
+            
+                                const emailConfirm = await Api.sendConfirmEmail(email);
+        
+                                if(emailConfirm.error) {
+                                    setLoading(false);
+                                    setError(emailConfirm.error);
+                                } else {
+    
+                                    setLoading(false);
+                                    navigate('/almostthere');
+    
+                                }
+            
+                            }
+                
+                        } catch(error: any) {
+    
+                            setLoading(false);
+                            setError(error.message);
                         }
             
-                    } catch(error: any) {
-
-                        setLoading(false);
-                        setError(error.message);
+                        
                     }
-        
-                    
+    
+                } else {
+                    setLoading(false);
+                    setError('Este E-mail não é um E-mail válido!');
                 }
-
-            } else {
+                
+            } catch(error) {
+    
                 setLoading(false);
-                setError('Este E-mail não é um E-mail válido!');
+                setError('Arquivo Inválido');
+    
             }
+
             
-        } catch(error) {
-
-            setLoading(false);
-            setError('Arquivo Inválido');
-
         }
+        
+
 
     };
 
