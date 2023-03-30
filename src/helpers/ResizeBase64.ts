@@ -23,8 +23,7 @@ export const ResizeBase64 = (base64Str: string) => {
           canvas.width = width
           canvas.height = height
           let ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-          
+          ctx!.drawImage(img, 0, 0, width, height);
           resolve(canvas.toDataURL('image/png').toString());
         }
       })
