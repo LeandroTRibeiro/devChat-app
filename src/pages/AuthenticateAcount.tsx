@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
+
 import { useDispatch } from "react-redux";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { setLogin } from "../redux/reducers/isLogin";
+
+import { Link, useSearchParams } from "react-router-dom";
+
 import { Api } from "../api/api";
+import { setCookie } from "../helpers/Cookie";
+
 import { Footer } from "../components/Footer";
 import { Loader } from "../components/Loader";
-import { setCookie } from "../helpers/Cookie";
-import { setLogin } from "../redux/reducers/isLogin";
 
 export const AuthenticateAcount = () => {
 

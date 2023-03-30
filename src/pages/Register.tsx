@@ -1,16 +1,23 @@
 import React, { useRef, useState } from "react";
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+
+import { useNavigate } from "react-router-dom";
+
 import ReactCrop, { Crop, PixelCrop, centerCrop, makeAspectCrop } from 'react-image-crop';
 import { useDebounceEffect } from '../canvashelpers/useDebounceEffect';
 import { canvasPreview } from "../canvashelpers/canvasPreview";
 import 'react-image-crop/dist/ReactCrop.css';
-import * as imageServices from '../canvashelpers/imagesFunctions';
+
 import { Api } from "../api/api";
-import { useNavigate } from "react-router-dom";
+import * as imageServices from '../canvashelpers/imagesFunctions';
+
 import { HandleEye } from "../helpers/HandleEye";
+import { ResizeBase64 } from "../helpers/ResizeBase64";
+
 import { Loader } from "../components/Loader";
 import { Footer } from "../components/Footer";
-import { ResizeBase64 } from "../helpers/ResizeBase64";
+import { ScrollTop } from "../routes/ScrollTop";
+
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 export const Register = () => {
 
@@ -222,8 +229,10 @@ export const Register = () => {
 
     return(
         <>
+        
         {loading &&
             <>
+            <ScrollTop />
             <Loader data={{loading}} />
             <Footer />
             </>
@@ -231,6 +240,7 @@ export const Register = () => {
 
         {!loading &&
             <>
+            <ScrollTop />
             {error &&
                 <div className="h-[100vh] flex justify-center items-center bg-white">
                     <div className="w-2/4 card bg-slate-50 text-stone-800 shadow-xl border-2 ms:w-3/4 mx:w-11/12">

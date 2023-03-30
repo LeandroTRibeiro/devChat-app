@@ -1,4 +1,7 @@
+import { useAppSelector } from "../redux/hooks/useAppselector";
+
 import { useRoutes } from "react-router-dom"
+
 import { AcessMail } from "../pages/AcessMail";
 import { AlmostThere } from "../pages/AlmostThere";
 import { AuthenticateAcount } from "../pages/AuthenticateAcount";
@@ -8,7 +11,6 @@ import { NotFound } from "../pages/NotFound";
 import { Recover } from "../pages/Recover";
 import { Recovering } from "../pages/Recovering";
 import { Register } from "../pages/Register";
-import { useAppSelector } from "../redux/hooks/useAppselector";
 
 export const RouterList = () => {
 

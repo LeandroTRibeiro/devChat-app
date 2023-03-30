@@ -1,10 +1,15 @@
 import React, { useState } from "react";
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { Api } from "../api/api";
+
 import { useDispatch } from "react-redux";
 import { setLogin } from "../redux/reducers/isLogin";
+
+import { useNavigate, useSearchParams } from "react-router-dom";
+
+import { Api } from "../api/api";
+
 import { Footer } from "../components/Footer";
+
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 export const Recovering = () => {
 
