@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
+
 import { Api } from "../api/api";
-import { getCookie } from "../helpers/Cookie";
 import { socket } from "../helpers/Socket";
+import { getCookie } from "../helpers/Cookie";
+
 import { ListUpdateType, MsgType, RingColorType, SendMsgType, UserType } from "../types/types";
-import { PencilSquareIcon, FaceSmileIcon, CheckCircleIcon, ExclamationCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
+
+import { FaceSmileIcon, CheckCircleIcon, ExclamationCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 
 const emojiInput = document.querySelector('#emoji') as HTMLInputElement;
 

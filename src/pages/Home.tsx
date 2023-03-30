@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
+
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { Api } from '../api/api';
-import { useAppSelector } from '../redux/hooks/useAppselector';
 import { setLogin } from '../redux/reducers/isLogin';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import { Footer } from '../components/Footer';
+
+import { Link, useNavigate } from 'react-router-dom';
+
+import { Api } from '../api/api';
 import { setCookie } from '../helpers/Cookie';
+
+import { Footer } from '../components/Footer';
 import { Loader } from '../components/Loader';
+
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 export const Home = () => {
 

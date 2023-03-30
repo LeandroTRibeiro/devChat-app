@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+
 import { Link, useNavigate } from 'react-router-dom';
+
 import { Api } from '../api/api';
+
 import { Footer } from '../components/Footer';
 import { Loader } from '../components/Loader';
 
